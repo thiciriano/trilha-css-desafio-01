@@ -5,54 +5,623 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trilha de CSS - DIO</title>
+  <style>
+    :root {
+      --primary-color: #00D4FF;
+      --secondary-color: #0066CC;
+      --accent-color: #FFD700;
+      --accent-secondary: #FF6B35;
+      --bg-color: #0A0A0A;
+      --surface-color: #1A1A2E;
+      --text-primary: #F0F0F0;
+      --text-secondary: #B0B0B0;
+      --border-color: #16213E;
+      --shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+      --gradient: linear-gradient(135deg, #00D4FF, #0066CC, #16213E);
+      --gradient-accent: linear-gradient(135deg, #FFD700, #FF6B35);
+      
+      --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      --font-size-base: 1rem;
+      --font-size-sm: 0.875rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.25rem;
+      --font-size-2xl: 1.5rem;
+      --font-size-3xl: 2rem;
+      --font-size-4xl: 2.5rem;
+      
+      --spacing-xs: 0.25rem;
+      --spacing-sm: 0.5rem;
+      --spacing-md: 1rem;
+      --spacing-lg: 1.5rem;
+      --spacing-xl: 2rem;
+      --spacing-2xl: 3rem;
+      --spacing-3xl: 4rem;
+      
+      --container-max-width: 1200px;
+      --container-padding: var(--spacing-md);
+    }
+
+    [data-theme="light"] {
+      --bg-color: #F8F9FA;
+      --surface-color: #F0F0F0;
+      --text-primary: #1A1A2E;
+      --text-secondary: #6C757D;
+      --border-color: #E9ECEF;
+      --shadow: 0 4px 20px rgba(0, 212, 255, 0.1);
+    }
+
+    [data-colorblind="true"] {
+      --primary-color: #0066CC;
+      --secondary-color: #004499;
+      --accent-color: #FF6600;
+      --accent-secondary: #FF9900;
+      --gradient: linear-gradient(135deg, #0066CC, #004499, #16213E);
+      --gradient-accent: linear-gradient(135deg, #FF6600, #FF9900);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-family);
+      font-size: var(--font-size-base);
+      line-height: 1.6;
+      color: var(--text-primary);
+      background-color: var(--bg-color);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: var(--container-max-width);
+      margin: 0 auto;
+      padding: 0 var(--container-padding);
+    }
+
+    .accessibility-controls {
+      position: fixed;
+      top: var(--spacing-md);
+      right: var(--spacing-md);
+      z-index: 1000;
+      display: flex;
+      gap: var(--spacing-sm);
+      background: var(--surface-color);
+      padding: var(--spacing-sm);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
+    }
+
+    .accessibility-btn {
+      background: var(--gradient);
+      color: white;
+      border: none;
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      transition: all 0.3s ease;
+      min-width: 44px;
+      min-height: 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .accessibility-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .accessibility-btn:hover::before {
+      left: 100%;
+    }
+
+    .accessibility-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 212, 255, 0.3);
+    }
+
+    .accessibility-btn:focus {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 2px;
+    }
+
+    .banner {
+      background: var(--gradient);
+      color: white;
+      padding: var(--spacing-3xl) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(0, 212, 255, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .logo {
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .logo img {
+      max-width: 120px;
+      height: auto;
+      filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+    }
+
+    .banner h1 {
+      font-size: var(--font-size-4xl);
+      font-weight: 700;
+      margin-bottom: var(--spacing-lg);
+      text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+      background: linear-gradient(45deg, #00D4FF, #FFD700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .banner p {
+      font-size: var(--font-size-xl);
+      margin-bottom: var(--spacing-2xl);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.95;
+    }
+
+    .banner button {
+      background: var(--gradient-accent);
+      color: white;
+      border: none;
+      padding: var(--spacing-lg) var(--spacing-2xl);
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+      min-width: 44px;
+      min-height: 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .banner button:hover::before {
+      left: 100%;
+    }
+
+    .banner button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(255, 215, 0, 0.5);
+    }
+
+    .banner button:focus {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 2px;
+    }
+
+    main {
+      padding: var(--spacing-3xl) 0;
+    }
+
+    section {
+      margin-bottom: var(--spacing-3xl);
+    }
+
+    h2 {
+      font-size: var(--font-size-3xl);
+      color: var(--text-primary);
+      margin-bottom: var(--spacing-lg);
+      text-align: center;
+      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #course-content {
+      text-align: center;
+    }
+
+    #course-content p {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      max-width: 800px;
+      margin: 0 auto var(--spacing-2xl);
+    }
+
+    .modules-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+      margin-top: var(--spacing-2xl);
+    }
+
+    .module {
+      background: var(--surface-color);
+      padding: var(--spacing-xl);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .module::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gradient);
+    }
+
+    .module:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(0, 212, 255, 0.3);
+      border-color: var(--primary-color);
+    }
+
+    .module span {
+      color: var(--primary-color);
+      font-weight: 600;
+      font-size: var(--font-size-lg);
+    }
+
+    #transform-world {
+      background: var(--gradient);
+      color: white;
+      padding: var(--spacing-3xl) 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #transform-world::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 30% 40%, rgba(255, 215, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+    }
+
+    #transform-world p {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    #professional-challenges {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-2xl);
+      align-items: center;
+    }
+
+    #professional-challenges img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.2));
+    }
+
+    #professional-challenges p {
+      font-size: var(--font-size-lg);
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    footer {
+      background: var(--surface-color);
+      padding: var(--spacing-2xl) 0;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gradient);
+    }
+
+    .dio-logo {
+      max-width: 150px;
+      height: auto;
+      margin-bottom: var(--spacing-lg);
+      filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+    }
+
+    footer p {
+      color: var(--text-secondary);
+      font-size: var(--font-size-lg);
+    }
+
+    footer a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: var(--accent-color);
+      text-decoration: underline;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    footer a:focus {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .accessibility-controls {
+        position: static;
+        margin-bottom: var(--spacing-md);
+        justify-content: center;
+      }
+
+      .banner {
+        padding: var(--spacing-2xl) 0;
+      }
+
+      .banner h1 {
+        font-size: var(--font-size-3xl);
+      }
+
+      .banner p {
+        font-size: var(--font-size-lg);
+      }
+
+      .modules-list {
+        grid-template-columns: 1fr;
+      }
+
+      #professional-challenges {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+
+      #professional-challenges img {
+        order: -1;
+      }
+
+      #transform-world p {
+        font-size: var(--font-size-xl);
+        letter-spacing: 2px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        --container-padding: var(--spacing-sm);
+      }
+
+      .banner h1 {
+        font-size: var(--font-size-2xl);
+      }
+
+      .banner p {
+        font-size: var(--font-size-base);
+      }
+
+      .module {
+        padding: var(--spacing-lg);
+      }
+
+      #transform-world p {
+        font-size: var(--font-size-lg);
+        letter-spacing: 1px;
+      }
+    }
+
+    @media (prefers-contrast: high) {
+      :root {
+        --shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+        --border-color: var(--primary-color);
+      }
+
+      .module {
+        border: 2px solid var(--primary-color);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    *:focus {
+      outline: 2px solid var(--accent-color);
+      outline-offset: 2px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 6px;
+      background: var(--primary-color);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      border-radius: 4px;
+      z-index: 1000;
+    }
+
+    .skip-link:focus {
+      top: 6px;
+    }
+  </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+  
+  <div class="accessibility-controls">
+    <button class="accessibility-btn" id="theme-toggle" aria-label="Alternar modo escuro">🌙</button>
+    <button class="accessibility-btn" id="colorblind-toggle" aria-label="Alternar modo para daltonismo">🎨</button>
+  </div>
+
   <header class="banner">
-    <div class="banner-content">
-      <div class="logo">
-        <img src="assets/images/logo.png" title="Logotipo Trilha de CSS DIO" alt="Logotipo Trilha de CSS DIO">
+    <div class="container">
+      <div class="banner-content">
+        <div class="logo">
+          <img src="assets/images/logo.png" title="Logotipo Trilha de CSS DIO" alt="Logotipo Trilha de CSS DIO">
+        </div>
+        <h1>Trilha de CSS da DIO</h1>
+        <p>A nova Trilha de CSS da DIO está disponível. Acesse já e aprenda do zero como desenvolver sites profissionais.</p>
+        <button>Quero me inscrever</button>
       </div>
-      <h1>Trilha de CSS da DIO</h1>
-      <p>A nova Trilha de CSS da DIO está disponível. Acesse já e aprenda do zero como desenvolver sites profissionais.</p>
-      <button>Quero me inscrever</button>
     </div>
   </header>
-  <main>
-    <section id="course-content">
-      <h2>O que vou aprender?</h2>
-      <p>
-        Temos 3 módulos recheados de conteúdos do básico ao avançado para que você aprenda a 
-        desenvolver sites profissionais utilizando somente HTML e CSS: sem nenhuma biblioteca ou framework a mais.
-      </p>
-      <div class="modules-list">
-        <div class="module">
-          <span>Módulo 01:</span> primeiros passos com CSS
+
+  <main id="main-content">
+    <div class="container">
+      <section id="course-content">
+        <h2>O que vou aprender?</h2>
+        <p>
+          Temos 3 módulos recheados de conteúdos do básico ao avançado para que você aprenda a 
+          desenvolver sites profissionais utilizando somente HTML e CSS: sem nenhuma biblioteca ou framework a mais.
+        </p>
+        <div class="modules-list">
+          <div class="module">
+            <span>Módulo 01:</span> primeiros passos com CSS
+          </div>
+          <div class="module">
+            <span>Módulo 02:</span> trabalhando com layouts no CSS
+          </div>
+          <div class="module">
+            <span>Módulo 03:</span> refinando os estilos CSS das nossas páginas
+          </div>
         </div>
-        <div class="module">
-          <span>Módulo 02:</span> trabalhando com layouts no CSS
+      </section>
+
+      <section id="transform-world">
+        <p>TRANSFORME O MUNDO COM A GENTE</p>
+      </section>
+
+      <section id="professional-challenges">
+        <div>
+          <h2>Evolua e encare novos desafios profissionais</h2>
+          <p>
+            Junte-se ao nosso ecossistema e transforme o mundo com a gente! Todos os dias dezenas de empresas 
+            acessam a nossa plataforma em busca dos talentos mais criativos, dinâmicos e colaborativos, 
+            além do conhecimento técnico. 
+            A nossa missão é te preparar para que você conecte-se com as melhores oportunidades.
+          </p>
         </div>
-        <div class="module">
-          <span>Módulo 03:</span> refinando os estilos CSS das nossas páginas
-        </div>
-      </div>
-    </section>
-    <section id="transform-world">
-      <p>TRANSFORME O MUNDO COM A GENTE</p>
-    </section>
-    <section id="professional-challenges">
-      <h2>Evolua e encare novos desafios profissionais</h2>
-      <img src="assets/images/professional-challenges.png" title="Homem lendo depoimentos em um tablet" alt="Homem lendo depoimentos em um tablet">
-      <p>
-        Junte-se ao nosso ecossistema e transforme o mundo com a gente! Todos os dias dezenas de empresas 
-        acessam a nossa plataforma em busca dos talentos mais criativos, dinâmicos e colaborativos, 
-        além do conhecimento técnico. 
-        A nossa missão é te preparar para que você conecte-se com as melhores oportunidades.
-      </p>
-    </section>
+        <img src="assets/images/professional-challenges.png" title="Homem lendo depoimentos em um tablet" alt="Homem lendo depoimentos em um tablet">
+      </section>
+    </div>
   </main>
+
   <footer>
-    <img class="dio-logo" src="assets/images/dio-logo.png" title="Logotipo DIO com o texto make the change" alt="Logotipo DIO com o texto make the change">
-    <p>Acesse <a href="https://dio.me">dio.me</a> e se cadastre agora</p>
+    <div class="container">
+      <img class="dio-logo" src="assets/images/dio-logo.png" title="Logotipo DIO com o texto make the change" alt="Logotipo DIO com o texto make the change">
+      <p>Acesse <a href="https://dio.me">dio.me</a> e se cadastre agora</p>
+    </div>
   </footer>
+
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const colorblindToggle = document.getElementById('colorblind-toggle');
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      
+      document.documentElement.setAttribute('data-theme', newTheme);
+      themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+      themeToggle.setAttribute('aria-label', 
+        newTheme === 'light' ? 'Alternar para modo escuro' : 'Alternar para modo claro'
+      );
+      
+      localStorage.setItem('theme', newTheme);
+    });
+    
+    colorblindToggle.addEventListener('click', () => {
+      const isColorblind = document.documentElement.getAttribute('data-colorblind') === 'true';
+      const newValue = !isColorblind;
+      
+      document.documentElement.setAttribute('data-colorblind', newValue);
+      colorblindToggle.textContent = newValue ? '👁️' : '🎨';
+      colorblindToggle.setAttribute('aria-label', 
+        newValue ? 'Desativar modo para daltonismo' : 'Ativar modo para daltonismo'
+      );
+      
+      localStorage.setItem('colorblind', newValue);
+    });
+    
+    const savedTheme = localStorage.getItem('theme');
+    const savedColorblind = localStorage.getItem('colorblind');
+    
+    if (savedTheme) {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      themeToggle.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+    }
+    
+    if (savedColorblind === 'true') {
+      document.documentElement.setAttribute('data-colorblind', 'true');
+      colorblindToggle.textContent = '👁️';
+    }
+  </script>
 </body>
 </html>
